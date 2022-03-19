@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "token.cpp"
-#include "position.cpp"
+#include "error.cpp"
 
 using namespace std;
 
@@ -39,7 +39,7 @@ class Lexer
         }
     }
 
-    vector<Token> makeTokens()
+    vector<Token> makeTokens(vector<Error>& errorReturn)
     {
         vector<Token> ret;
 
@@ -52,6 +52,14 @@ class Lexer
             else if(DIGITS.count((*this).current_char))
             {
                ret.push_back(makeNumber());
+
+            }
+            else
+            {
+                string s = "";
+                s+= current_char;
+                errorReturn.push_back(Error((*this).pos, (*this).pos, INVALID_CHARECTER, s));
+                advance();
             }
         }
 
@@ -93,6 +101,6 @@ class Lexer
             return Token(TT_DOUB, stod(num));
         }
     }
-
+    
 };
 

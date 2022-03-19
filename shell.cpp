@@ -11,7 +11,17 @@ using namespace std;
 vector<Token> run(string &text)
 {
     Lexer lxr = Lexer(text);
-    vector<Token> tokens = lxr.makeTokens();
+    vector<Error> errors;
+
+    vector<Token> tokens = lxr.makeTokens(errors);
+
+    if (!errors.empty()) 
+    {
+        for (auto error: errors)
+        {
+            error.print();
+        }
+    }
     return tokens;
 }
 
